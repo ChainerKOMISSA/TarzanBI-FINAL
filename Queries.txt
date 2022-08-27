@@ -1,0 +1,68 @@
+Requête 1 : Produits
+=>SELECT SUM(disctinct Quantity)as Nombre , Description
+FROM Commandes
+GROUP BY Description
+ORDER BY Nombre
+LIMIT 5;
+
+
+Requête 2 : Stats par ville
+=>SELECT SUM(Quantity), City 
+FROM commandes 
+where Description = 'Routeurs' 
+group by City
+
+
+Requete 3 : Stats par mois
+=>SELECT SUM(Quantity), InvoiceDate 
+FROM commandes 
+where Description = 'Routeurs' 
+group by InvoiceDate
+having InvoiceDate LIKE '%/07/%'
+
+
+SELECT SUM(Quantity), InvoiceDate 
+FROM commandes 
+where Description = 'Routeurs'
+group by InvoiceDate
+
+
+SELECT SUM(Quantity), InvoiceDate 
+FROM commandes 
+where InvoiceDate LIKE '%/07/%'
+group by InvoiceDate
+
+-------
+WITH temporaryTable(temp) as
+(SELECT InvoiceDate
+FROM commandes
+WHERE InvoiceDate LIKE '%/07/%')
+SELECT SUM(Quantity), InvoiceDate
+FROM commandes, temporaryTable
+WHERE Description = 'Routeurs'
+AND commandes.InvoiceDate = temporaryTable.temp
+GROUP BY commandes.InvoiceDate
+
+
+
+
+->Une société qui fait de la pub mais pas de clients -> outil de compréhensio des clients et de propositions de publicités qui vont impacter la clientèle
+
+->côté bas prix
+
+->rapidité
+
+->optimisation
+
+
+
+
+
+$result = DB::table('commandes')
+                      ->select(DB::raw('SUM(Quantity) as Qte'), 'InvoiceDate')
+                      ->where('Description','=' ,$request2->produit)
+                      ->where('InvoiceDate', 'like','%'.$month.'%')
+                      ->groupBy('InvoiceDate')
+                      ->limit(5)
+                      ->get();
+	
